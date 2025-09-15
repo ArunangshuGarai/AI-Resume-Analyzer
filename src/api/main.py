@@ -3,11 +3,11 @@ FastAPI REST API for HR-Tech Challenge
 Main API endpoints for resume screening and sentiment analysis
 """
 
-from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
+from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from typing import List, Dict, Optional
+from pydantic import BaseModel, Field
+from typing import List, Dict, Optional, Any, Union
 import os
 import shutil
 import tempfile
@@ -78,7 +78,137 @@ class ScreeningResponse(BaseModel):
     strengths: List[str] = []
     concerns: List[str] = []
     missing_skills: List[str] = []
+    position_context: Optional[Dict[str, str]] = None
     error: Optional[str] = None
+
+class ExperienceRequirement(BaseModel):
+    min_years: int
+    max_years: int
+
+class EducationRequirement(BaseModel):
+    degree: str
+    field: List[str]
+
+class SalaryRange(BaseModel):
+    min: int
+    max: int
+
+class JobRequirements(BaseModel):
+    required_skills: Dict[str, List[str]]
+    required_experience: ExperienceRequirement
+    required_education: EducationRequirement
+    salary_range: SalaryRange
+
+@app.post("/screen-resume-with-job", response_model=ScreeningResponse)
+async def screen_resume_with_job(
+    file: UploadFile = File(...),
+    department: str = Form(...),
+    position: str = Form(...),
+    job_requirements: str = Form(None)
+):
+    """
+    Screen a resume against specific job requirements
+    """
+    if not resume_screener:
+        raise HTTPException(status_code=503, detail="Resume screening service not available")
+    
+    # Validate file type
+    allowed_extensions = {'.pdf', '.docx', '.txt'}
+    file_extension = Path(file.filename).suffix.lower()
+    
+    if file_extension not in allowed_extensions:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unsupported file type: {file_extension}. Allowed: {allowed_extensions}"
+        )
+    
+    # Parse job requirements if provided
+    position_requirements = None
+    if job_requirements:
+        try:
+            position_requirements = json.loads(job_requirements)
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail="Invalid job requirements format")
+    
+    tmp_file_path = None
+    try:
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp_file:
+            content = await file.read()
+            tmp_file.write(content)
+            tmp_file_path = tmp_file.name
+        
+        await file.seek(0)  # Reset file pointer
+        
+        # Store original requirements
+        original_requirements = resume_screener.job_requirements
+        
+        try:
+            # Update screener with position-specific requirements if provided
+            if position_requirements:
+                resume_screener.job_requirements = position_requirements
+            
+            # Screen the resume
+            result = resume_screener.screen_single_resume(tmp_file_path)
+            
+            # Add position context to result
+            if result['success']:
+                result['position_context'] = {
+                    'department': department,
+                    'position': position,
+                    'screening_date': datetime.now().isoformat()
+                }
+            
+            if result['success']:
+                return ScreeningResponse(
+                    success=True,
+                    candidate_name=result.get('candidate_name'),
+                    candidate_email=result.get('candidate_email'),
+                    final_score=result['final_score'],
+                    recommendation=result['recommendation'],
+                    interview_recommended=result['interview_recommended'],
+                    strengths=result.get('strengths', []),
+                    concerns=result.get('concerns', []),
+                    missing_skills=result.get('missing_skills', []),
+                    position_context=result.get('position_context')
+                )
+            else:
+                return ScreeningResponse(
+                    success=False,
+                    final_score=0.0,
+                    recommendation="error",
+                    interview_recommended=False,
+                    error=result.get('error', 'Unknown error occurred')
+                )
+        finally:
+            # Restore original requirements
+            resume_screener.job_requirements = original_requirements
+            
+    except Exception as e:
+        return ScreeningResponse(
+            success=False,
+            final_score=0.0,
+            recommendation="error",
+            interview_recommended=False,
+            error=str(e)
+        )
+    finally:
+        # Clean up temporary file
+        if tmp_file_path and os.path.exists(tmp_file_path):
+            try:
+                time.sleep(0.1)  # Small delay to ensure file is not in use
+                os.unlink(tmp_file_path)
+            except PermissionError:
+                # If file is still in use, register for cleanup at exit
+                try:
+                    atexit.register(lambda: os.path.exists(tmp_file_path) and os.unlink(tmp_file_path))
+                except:
+                    pass
+
+class ResumeScreeningRequest(BaseModel):
+    department: str = Field(..., description="Department for the position")
+    position: str = Field(..., description="Job position title")
+    job_requirements: Optional[JobRequirements] = Field(None, description="Specific requirements for the position")
 
 class SentimentRequest(BaseModel):
     feedback_text: str
@@ -113,8 +243,10 @@ async def root():
         "version": "1.0.0",
         "endpoints": {
             "resume_screening": "/screen-resume",
+            "resume_screening_with_job": "/screen-resume-with-job",
             "sentiment_analysis": "/analyze-sentiment",
             "batch_sentiment": "/analyze-sentiment-batch",
+            "job_positions": "/get-job-positions",
             "health_check": "/health"
         },
         "documentation": "/docs",
@@ -135,6 +267,254 @@ async def health_check():
         }
     }
     return status
+
+class JobPosition(BaseModel):
+    required_skills: Dict[str, List[str]]
+    required_experience: ExperienceRequirement
+    required_education: EducationRequirement
+    salary_range: SalaryRange
+
+class DepartmentPositions(BaseModel):
+    positions: Dict[str, JobPosition]
+
+class GetJobPositionsResponse(BaseModel):
+    success: bool
+    positions: Dict[str, Dict[str, JobPosition]]
+    total_departments: int
+    total_positions: int
+
+# Get available job positions
+@app.get("/get-job-positions", response_model=GetJobPositionsResponse)
+async def get_job_positions():
+    """Get all available job positions by department"""
+    positions = {
+        "Engineering": {
+            "Software Engineer": {
+                "required_skills": {
+                    "programming_languages": ["Python", "Java", "JavaScript"],
+                    "frameworks": ["React", "Node.js", "Django", "Spring Boot"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Git", "Docker", "Kubernetes", "Jenkins"]
+                },
+                "required_experience": {"min_years": 3, "max_years": 7},
+                "required_education": {
+                    "degree": "Bachelor's",
+                    "field": ["Computer Science", "Software Engineering", "Information Technology"]
+                },
+                "salary_range": {"min": 80000, "max": 120000}
+            },
+            "Senior Software Engineer": {
+                "required_skills": {
+                    "programming_languages": ["Python", "Java", "JavaScript", "Go", "Rust"],
+                    "frameworks": ["React", "Node.js", "Django", "Spring Boot", "Microservices"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Git", "Docker", "Kubernetes", "Jenkins", "Terraform"]
+                },
+                "required_experience": {"min_years": 5, "max_years": 10},
+                "required_education": {
+                    "degree": "Bachelor's",
+                    "field": ["Computer Science", "Software Engineering", "Information Technology"]
+                },
+                "salary_range": {"min": 120000, "max": 180000}
+            }
+        },
+        "Data Science": {
+            "Data Scientist": {
+                "required_skills": {
+                    "programming_languages": ["Python", "R", "SQL"],
+                    "frameworks": ["Pandas", "NumPy", "Scikit-learn", "TensorFlow", "PyTorch"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB", "BigQuery"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Jupyter", "Git", "Tableau", "Power BI"]
+                },
+                "required_experience": {"min_years": 3, "max_years": 7},
+                "required_education": {
+                    "degree": "Master's",
+                    "field": ["Data Science", "Statistics", "Mathematics", "Computer Science"]
+                },
+                "salary_range": {"min": 90000, "max": 140000}
+            }
+        }
+    }
+    
+    return {
+        "success": True,
+        "positions": positions,
+        "total_departments": len(positions),
+        "total_positions": sum(len(dept_positions) for dept_positions in positions.values())
+    }
+
+@app.post("/screen-resume-with-job", response_model=ScreeningResponse)
+async def screen_resume_with_job(
+    department: str = Form(...),
+    position: str = Form(...),
+    job_requirements: str = Form(None),
+    file: UploadFile = File(...)
+):
+    """
+    Screen a resume file against specific job requirements
+    """
+    
+    if not resume_screener:
+        raise HTTPException(status_code=503, detail="Resume screening service not available")
+    
+    # Validate file type
+    allowed_extensions = {'.pdf', '.docx', '.txt'}
+    file_extension = Path(file.filename).suffix.lower()
+    
+    if file_extension not in allowed_extensions:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unsupported file type: {file_extension}. Allowed: {allowed_extensions}"
+        )
+    
+    # Parse job requirements if provided
+    job_req = None
+    if job_requirements:
+        try:
+            job_req = json.loads(job_requirements)
+        except json.JSONDecodeError:
+            raise HTTPException(status_code=400, detail="Invalid job requirements format")
+    
+    tmp_file_path = None
+    try:
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp_file:
+            content = await file.read()
+            tmp_file.write(content)
+            tmp_file_path = tmp_file.name
+        
+        # Rewind file for further processing
+        await file.seek(0)
+        
+        # Screen resume with job-specific requirements
+        if job_req:
+            # Backup original requirements
+            original_req = resume_screener.job_requirements
+            resume_screener.job_requirements = job_req
+            
+            result = resume_screener.screen_single_resume(tmp_file_path)
+            
+            # Restore original requirements
+            resume_screener.job_requirements = original_req
+        else:
+            result = resume_screener.screen_single_resume(tmp_file_path)
+        
+        # Add job context to result
+        if result.get('success'):
+            result['job_context'] = {
+                'department': department,
+                'position': position,
+                'screening_date': datetime.now().isoformat()
+            }
+        
+        # Format response
+        if result['success']:
+            return ScreeningResponse(
+                success=True,
+                candidate_name=result.get('candidate_name'),
+                candidate_email=result.get('candidate_email'),
+                final_score=result['final_score'],
+                recommendation=result['recommendation'],
+                interview_recommended=result['interview_recommended'],
+                strengths=result.get('strengths', []),
+                concerns=result.get('concerns', []),
+                missing_skills=result.get('missing_skills', []),
+                job_context=result.get('job_context')
+            )
+        else:
+            return ScreeningResponse(
+                success=False,
+                final_score=0.0,
+                recommendation="error",
+                interview_recommended=False,
+                error=result.get('error', 'Unknown error occurred')
+            )
+            
+    except Exception as e:
+        return ScreeningResponse(
+            success=False,
+            final_score=0.0,
+            recommendation="error",
+            interview_recommended=False,
+            error=str(e)
+        )
+    finally:
+        # Clean up temporary file
+        if tmp_file_path and os.path.exists(tmp_file_path):
+            try:
+                time.sleep(0.1)  # Small delay to ensure file is not in use
+                os.unlink(tmp_file_path)
+            except PermissionError:
+                # Register cleanup for program exit if immediate deletion fails
+                try:
+                    atexit.register(lambda: os.path.exists(tmp_file_path) and os.unlink(tmp_file_path))
+                except:
+                    pass
+
+@app.get("/get-job-positions")
+async def get_job_positions():
+    """Get all available job positions by department"""
+    positions = {
+        "Engineering": {
+            "Software Engineer": {
+                "required_skills": {
+                    "programming_languages": ["Python", "Java", "JavaScript"],
+                    "frameworks": ["React", "Node.js", "Django", "Spring Boot"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Git", "Docker", "Kubernetes", "Jenkins"]
+                },
+                "required_experience": {"min_years": 3, "max_years": 7},
+                "required_education": {
+                    "degree": "Bachelor's",
+                    "field": ["Computer Science", "Software Engineering", "Information Technology"]
+                },
+                "salary_range": {"min": 80000, "max": 120000}
+            },
+            "Senior Software Engineer": {
+                "required_skills": {
+                    "programming_languages": ["Python", "Java", "JavaScript", "Go", "Rust"],
+                    "frameworks": ["React", "Node.js", "Django", "Spring Boot", "Microservices"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB", "Redis"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Git", "Docker", "Kubernetes", "Jenkins", "Terraform"]
+                },
+                "required_experience": {"min_years": 5, "max_years": 10},
+                "required_education": {
+                    "degree": "Bachelor's",
+                    "field": ["Computer Science", "Software Engineering", "Information Technology"]
+                },
+                "salary_range": {"min": 120000, "max": 180000}
+            }
+        },
+        "Data Science": {
+            "Data Scientist": {
+                "required_skills": {
+                    "programming_languages": ["Python", "R", "SQL"],
+                    "frameworks": ["Pandas", "NumPy", "Scikit-learn", "TensorFlow", "PyTorch"],
+                    "databases": ["MySQL", "PostgreSQL", "MongoDB", "BigQuery"],
+                    "cloud_platforms": ["AWS", "Azure", "Google Cloud"],
+                    "tools": ["Jupyter", "Git", "Tableau", "Power BI"]
+                },
+                "required_experience": {"min_years": 3, "max_years": 7},
+                "required_education": {
+                    "degree": "Master's",
+                    "field": ["Data Science", "Statistics", "Mathematics", "Computer Science"]
+                },
+                "salary_range": {"min": 90000, "max": 140000}
+            }
+        }
+    }
+    
+    return {
+        "success": True,
+        "positions": positions,
+        "total_departments": len(positions),
+        "total_positions": sum(len(dept_positions) for dept_positions in positions.values())
+    }
 
 @app.post("/screen-resume", response_model=ScreeningResponse)
 async def screen_resume(file: UploadFile = File(...)):

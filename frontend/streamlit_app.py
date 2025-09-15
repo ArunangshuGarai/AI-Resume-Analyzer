@@ -13,6 +13,7 @@ import json
 import time
 from pathlib import Path
 import io
+from config import JOB_POSITIONS
 
 # Configure page
 st.set_page_config(
@@ -37,11 +38,27 @@ class HRTechDashboard:
         except Exception as e:
             return False, str(e)
     
-    def screen_resume(self, uploaded_file):
-        """Screen uploaded resume"""
+    def screen_resume(self, uploaded_file, department, position):
+        """Screen uploaded resume for a specific position"""
         try:
+            # Get job requirements for the selected position
+            job_requirements = JOB_POSITIONS.get(department, {}).get(position, {})
+            
+            # Prepare multipart form data
             files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
-            response = requests.post(f"{self.api_url}/screen-resume", files=files, timeout=30)
+            data = {
+                "department": department,
+                "position": position,
+                "job_requirements": json.dumps(job_requirements)
+            }
+            
+            # Make request to enhanced endpoint
+            response = requests.post(
+                f"{self.api_url}/screen-resume-with-job",
+                files=files,
+                data=data,
+                timeout=30
+            )
             
             if response.status_code == 200:
                 return True, response.json()
@@ -112,11 +129,46 @@ def main():
     # Resume Screening Tab
     with tab1:
         st.header("Resume Screening")
-        st.write("Upload a resume to analyze candidate fit for Software Engineer position")
+        st.write("Upload a resume to analyze candidate fit for available positions")
         
         col1, col2 = st.columns([1, 2])
         
         with col1:
+            # Department and position selection
+            department = st.selectbox(
+                "Select Department",
+                options=list(JOB_POSITIONS.keys()),
+                help="Choose the department for the position"
+            )
+            
+            # Get available positions for selected department
+            available_positions = list(JOB_POSITIONS.get(department, {}).keys())
+            position = st.selectbox(
+                "Select Position",
+                options=available_positions,
+                help="Choose the specific position"
+            )
+            
+            # Show position requirements
+            if department and position:
+                requirements = JOB_POSITIONS[department][position]
+                with st.expander("📋 Position Requirements"):
+                    st.write("**Required Skills:**")
+                    for category, skills in requirements["required_skills"].items():
+                        st.write(f"- {category.replace('_', ' ').title()}:")
+                        st.write(", ".join(skills))
+                    
+                    exp = requirements["required_experience"]
+                    st.write(f"**Experience:** {exp['min_years']}-{exp['max_years']} years")
+                    
+                    edu = requirements["required_education"]
+                    st.write(f"**Education:** {edu['degree']} in {' or '.join(edu['field'])}")
+                    
+                    salary = requirements["salary_range"]
+                    st.write(f"**Salary Range:** ${salary['min']:,} - ${salary['max']:,}")
+            
+            st.markdown("---")
+            
             uploaded_file = st.file_uploader(
                 "Choose resume file", 
                 type=['txt', 'pdf', 'docx'],
@@ -128,11 +180,16 @@ def main():
                 st.info(f"📏 Size: {len(uploaded_file.getvalue())} bytes")
                 
                 if st.button("🔍 Analyze Resume", type="primary"):
-                    with st.spinner("Analyzing resume..."):
-                        success, result = dashboard.screen_resume(uploaded_file)
+                    with st.spinner(f"Analyzing resume for {position} position..."):
+                        success, result = dashboard.screen_resume(uploaded_file, department, position)
                     
                     if success:
                         st.session_state['resume_result'] = result
+                        st.session_state['selected_position'] = {
+                            'department': department,
+                            'position': position,
+                            'requirements': JOB_POSITIONS[department][position]
+                        }
                     else:
                         st.error(f"Analysis failed: {result.get('error', 'Unknown error')}")
         

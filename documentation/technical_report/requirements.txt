@@ -1,0 +1,3 @@
+markdown==3.4.3
+fpdf==1.7.2
+beautifulsoup4==4.12.2
