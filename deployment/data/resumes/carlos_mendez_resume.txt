@@ -1,0 +1,25 @@
+CARLOS MENDEZ
+Software Engineer
+Email: carlos.mendez@email.com | Phone: (555) 292-4091
+
+PROFESSIONAL SUMMARY
+Software Engineer with 3 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: JavaScript, Scala
+- Frameworks: Node.js, Ruby on Rails, Flask
+- Databases: Oracle, Neo4j, MongoDB
+- Cloud Platforms: Netlify
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Backend Developer | BigTech Inc | 2021 - Present
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Master's in Mathematics
+Community College | 2015 - 2019

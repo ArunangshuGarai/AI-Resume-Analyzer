@@ -1,0 +1,35 @@
+JAMES THOMPSON
+Software Engineer
+Email: james.thompson@email.com | Phone: (555) 428-8388
+
+PROFESSIONAL SUMMARY
+Software Engineer with 9 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: PHP, Go, Rust, Swift
+- Frameworks: FastAPI, Angular, ASP.NET
+- Databases: SQLite, InfluxDB
+- Cloud Platforms: DigitalOcean, Firebase
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Lead Developer | ScaleUp | 2015 - 2017
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Senior Software Engineer | InnovateLab | 2008 - 2011
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Senior Software Engineer | StartupXYZ | 2004 - 2008
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Electrical Engineering
+State University | 2015 - 2019

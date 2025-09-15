@@ -1,0 +1,35 @@
+MICHAEL BROWN
+Software Engineer
+Email: michael.brown@email.com | Phone: (555) 373-4849
+
+PROFESSIONAL SUMMARY
+Software Engineer with 7 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: R, C#, MATLAB, JavaScript, Scala
+- Frameworks: React, Svelte, Angular, Django, FastAPI, Vue.js
+- Databases: DynamoDB, MongoDB, MariaDB, Oracle, Redis
+- Cloud Platforms: Firebase, AWS
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | ScaleUp | 2017 - 2019
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Tech Lead | CloudWorks | 2012 - 2014
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Tech Lead | InnovateLab | 2009 - 2012
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Mathematics
+Computer Science College | 2015 - 2019

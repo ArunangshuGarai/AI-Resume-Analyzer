@@ -1,0 +1,42 @@
+MIKE DAVIS
+Marketing Specialist transitioning to Tech
+mike.davis@email.com | (555) 456-7890
+
+OBJECTIVE
+Marketing professional with 6 years of experience seeking to transition into 
+software development. Currently learning programming through online courses 
+and bootcamps. Eager to apply analytical and problem-solving skills in a 
+technical role.
+
+TECHNICAL SKILLS (Learning)
+- Programming Languages: HTML, CSS, Basic JavaScript
+- Tools: WordPress, Google Analytics, Photoshop
+- Currently Learning: Python, React (through online courses)
+
+PROFESSIONAL EXPERIENCE
+
+Marketing Manager | RetailCorp | 2018 - Present
+- Managed digital marketing campaigns with $100k+ budgets
+- Analyzed customer data and market trends
+- Led team of 5 marketing specialists
+- Increased online sales by 25% year-over-year
+
+Marketing Coordinator | SmallBiz Inc. | 2016 - 2018
+- Created content for social media and websites
+- Coordinated promotional events and campaigns
+- Maintained company website using WordPress
+- Collaborated with external agencies and vendors
+
+EDUCATION
+Bachelor of Business Administration - Marketing
+Business University | 2012 - 2016
+
+RELEVANT COURSEWORK & CERTIFICATIONS
+- Completed: "Introduction to Python" - Codecademy (2024)
+- In Progress: "Full Stack Web Development Bootcamp" - Online University
+- Google Analytics Certified
+- HubSpot Content Marketing Certified
+
+PROJECTS
+- Personal Blog: Created WordPress blog about marketing trends
+- Learning Portfolio: Building simple websites to practice HTML/CSS

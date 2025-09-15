@@ -1,0 +1,21 @@
+department_distribution:
+  Customer Support: 80
+  Design: 70
+  Engineering: 60
+  Finance: 81
+  HR: 89
+  Marketing: 49
+  Operations: 69
+  Product: 68
+  Sales: 59
+feedback_type_distribution:
+  exit_interview: 25
+  performance_review: 207
+  survey: 189
+  team_feedback: 204
+sentiment_distribution:
+  negative: 65
+  neutral: 202
+  positive: 358
+total_feedback_entries: 625
+unique_employees: 200

@@ -1,0 +1,57 @@
+position: "Software Engineer"
+department: "Engineering"
+level: "Mid-Level"
+required_skills:
+  programming_languages:
+    - "Python"
+    - "Java"
+    - "JavaScript"
+  frameworks:
+    - "React"
+    - "Node.js"
+    - "Django"
+    - "Spring Boot"
+  databases:
+    - "MySQL"
+    - "PostgreSQL"
+    - "MongoDB"
+  cloud_platforms:
+    - "AWS"
+    - "Azure"
+    - "Google Cloud"
+  tools:
+    - "Git"
+    - "Docker"
+    - "Kubernetes"
+    - "Jenkins"
+
+required_experience:
+  min_years: 3
+  max_years: 7
+  
+required_education:
+  degree: "Bachelor's"
+  field: ["Computer Science", "Software Engineering", "Information Technology"]
+
+preferred_skills:
+  - "Machine Learning"
+  - "DevOps"
+  - "Microservices"
+  - "Agile/Scrum"
+
+job_description: |
+  We are looking for a skilled Software Engineer to join our dynamic development team. 
+  The ideal candidate will have 3-7 years of experience in full-stack development, 
+  with strong proficiency in modern programming languages and cloud technologies.
+  
+  Responsibilities:
+  - Design and develop scalable web applications
+  - Collaborate with cross-functional teams
+  - Write clean, maintainable code
+  - Participate in code reviews and testing
+  - Deploy and maintain applications in cloud environments
+
+salary_range:
+  min: 80000
+  max: 120000
+  currency: "USD"

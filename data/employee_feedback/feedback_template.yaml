@@ -1,0 +1,53 @@
+feedback_categories:
+  - "job_satisfaction"
+  - "work_life_balance"
+  - "career_development" 
+  - "management"
+  - "compensation"
+  - "company_culture"
+  - "workload"
+  - "team_collaboration"
+
+sentiment_patterns:
+  positive:
+    - "I love working here"
+    - "Great team collaboration"
+    - "Excellent growth opportunities"
+    - "Supportive management"
+    - "Work-life balance is perfect"
+    - "Challenging and rewarding projects"
+  
+  neutral:
+    - "The work is okay"
+    - "Management could be better"
+    - "Average workplace"
+    - "Some good projects, some not so much"
+    - "Decent benefits package"
+  
+  negative:
+    - "Too much workload"
+    - "Poor management decisions"
+    - "No growth opportunities"
+    - "Stressful work environment"
+    - "Underpaid for the work"
+    - "Bad work-life balance"
+
+attrition_indicators:
+  high_risk:
+    - "thinking about leaving"
+    - "looking for new opportunities"
+    - "not satisfied with career growth"
+    - "burnout"
+    - "toxic environment"
+  
+  medium_risk:
+    - "could be better"
+    - "limited opportunities"
+    - "sometimes stressful"
+    - "considering options"
+  
+  low_risk:
+    - "happy here"
+    - "great place to work"
+    - "satisfied with role"
+    - "good career prospects"

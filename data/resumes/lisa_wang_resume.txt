@@ -1,0 +1,25 @@
+LISA WANG
+Software Engineer
+Email: lisa.wang@email.com | Phone: (555) 990-6631
+
+PROFESSIONAL SUMMARY
+Software Engineer with 3 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: Python, Scala, Go
+- Frameworks: Express.js, Angular, React
+- Databases: InfluxDB, PostgreSQL
+- Cloud Platforms: Firebase, Azure
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Software Engineer | DataSystems | 2021 - Present
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Computer Science
+Community College | 2015 - 2019

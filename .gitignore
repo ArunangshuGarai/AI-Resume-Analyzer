@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+hr_ai_env/
+venv/
+env/
+
+# Environment variables
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (don't commit sensitive data)
+data/raw/
+data/private/
+*.csv
+*.xlsx
+*.pdf
+*.docx
+
+# Models (too large for git)
+models/*.pkl
+models/*.joblib
+*.h5
+*.pb
+
+# Logs
+*.log
+logs/
+
+# API keys and secrets
+config/secrets.yaml
+api_keys.txt
+
+# Windows specific
+Thumbs.db
+desktop.ini
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/

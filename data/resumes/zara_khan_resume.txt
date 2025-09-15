@@ -1,0 +1,40 @@
+ZARA KHAN
+Software Engineer
+Email: zara.khan@email.com | Phone: (555) 770-7014
+
+PROFESSIONAL SUMMARY
+Software Engineer with 10 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: Ruby, Go, PHP, Rust, Java, Scala
+- Frameworks: Flask, Ruby on Rails, ASP.NET, Django, Spring Boot, Node.js
+- Databases: Oracle, Redis, DynamoDB
+- Cloud Platforms: Vercel, Google Cloud, Netlify, DigitalOcean
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Tech Lead | AgileTeam | 2014 - 2016
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Senior Software Engineer | DataSystems | 2006 - 2009
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Senior Software Engineer | StartupXYZ | 2001 - 2002
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Senior Software Engineer | AgileTeam | 1997 - 2001
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Information Technology
+Engineering University | 2015 - 2019

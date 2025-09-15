@@ -1,0 +1,141 @@
+resume_screening:
+  skill_extraction:
+    system_prompt: |
+      You are an expert HR analyst specializing in technical skill extraction from resumes.
+      Extract and categorize technical skills mentioned in the resume text.
+      Be precise and only include skills that are explicitly mentioned.
+      
+    user_prompt: |
+      Extract technical skills from this resume:
+      
+      Resume Text: {resume_text}
+      
+      Return ONLY a valid JSON object with this exact structure:
+      {{
+        "programming_languages": [],
+        "frameworks": [],
+        "databases": [],
+        "cloud_platforms": [],
+        "tools": [],
+        "other_technical_skills": []
+      }}
+
+  experience_analysis:
+    system_prompt: |
+      You are an expert HR analyst specializing in work experience analysis.
+      Analyze the work experience section of resumes and extract relevant details.
+      Focus on years of experience, job roles, and key achievements.
+
+    user_prompt: |
+      Analyze the work experience from this resume:
+      
+      Resume Text: {resume_text}
+      
+      Return ONLY a valid JSON object:
+      {{
+        "total_years_experience": 0,
+        "relevant_experience_years": 0,
+        "current_position": "",
+        "experience_level": "junior/mid-level/senior",
+        "key_achievements": [],
+        "industry_experience": []
+      }}
+
+  job_matching:
+    system_prompt: |
+      You are an expert HR recruiter specializing in job-candidate matching.
+      Compare candidate qualifications against job requirements and provide detailed analysis.
+      Be objective and provide specific reasoning for your assessment.
+
+    user_prompt: |
+      Compare this candidate against the job requirements:
+      
+      Job Requirements:
+      {job_requirements}
+      
+      Candidate Resume:
+      {resume_text}
+      
+      Candidate Skills:
+      {extracted_skills}
+      
+      Candidate Experience:
+      {extracted_experience}
+      
+      Provide a detailed matching analysis in JSON format:
+      {{
+        "overall_match_score": 0,
+        "skills_match_score": 0,
+        "experience_match_score": 0,
+        "education_match_score": 0,
+        "detailed_analysis": {{
+          "matching_skills": [],
+          "missing_skills": [],
+          "experience_assessment": "",
+          "strengths": [],
+          "concerns": []
+        }},
+        "recommendation": "strong_match/good_match/partial_match/poor_match",
+        "interview_recommendation": true,
+        "salary_fit": true,
+        "additional_notes": ""
+      }}
+
+sentiment_analysis:
+  sentiment_classification:
+    system_prompt: |
+      You are an expert HR analyst specializing in employee sentiment analysis.
+      Analyze employee feedback to determine sentiment and potential attrition risk.
+      Consider both explicit statements and implicit emotional indicators.
+
+    user_prompt: |
+      Analyze this employee feedback for sentiment and attrition risk:
+      
+      Employee Feedback: "{feedback_text}"
+      
+      Employee Context:
+      - Department: {department}
+      - Position: {position} 
+      - Tenure: {tenure_months} months
+      - Manager Rating: {manager_rating}/5
+      
+      Return ONLY a valid JSON object:
+      {{
+        "sentiment": "positive/neutral/negative",
+        "confidence_score": 0.0,
+        "attrition_risk": "low/medium/high",
+        "risk_factors": [],
+        "positive_indicators": [],
+        "key_concerns": [],
+        "recommended_actions": []
+      }}
+
+  engagement_recommendations:
+    system_prompt: |
+      You are an expert HR consultant specializing in employee engagement and retention.
+      Based on sentiment analysis, provide specific, actionable recommendations to improve employee satisfaction and reduce attrition risk.
+
+    user_prompt: |
+      Based on this employee sentiment analysis, provide engagement recommendations:
+      
+      Employee Profile:
+      - Department: {department}
+      - Position: {position}
+      - Tenure: {tenure_months} months
+      - Sentiment: {sentiment}
+      - Attrition Risk: {attrition_risk}
+      - Key Concerns: {key_concerns}
+      - Manager Rating: {manager_rating}/5
+      
+      Feedback Text: "{feedback_text}"
+      
+      Provide specific recommendations in JSON format:
+      {{
+        "immediate_actions": [],
+        "short_term_strategies": [],
+        "long_term_initiatives": [],
+        "manager_coaching_points": [],
+        "follow_up_timeline": "",
+        "success_metrics": [],
+        "estimated_impact": "low/medium/high"
+      }}

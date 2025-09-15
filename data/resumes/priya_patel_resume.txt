@@ -1,0 +1,30 @@
+PRIYA PATEL
+Software Engineer
+Email: priya.patel@email.com | Phone: (555) 127-5203
+
+PROFESSIONAL SUMMARY
+Software Engineer with 4 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: Swift, Python, C++, Scala
+- Frameworks: Express.js, Node.js, Ruby on Rails
+- Databases: Cassandra, MariaDB, InfluxDB
+- Cloud Platforms: Firebase, Netlify
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Software Engineer | DevSolutions | 2020 - 2022
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Full Stack Developer | DevSolutions | 2018 - 2020
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Information Technology
+Computer Science College | 2015 - 2019

@@ -1,0 +1,22 @@
+{
+  "project": "HR-Tech Innovation Challenge",
+  "student_name": "Your Name Here",
+  "submission_date": "2025-09-14T11:23:42.558275",
+  "components": {
+    "resume_screening": "\u2705 Complete - AI-powered resume parsing and job matching",
+    "sentiment_analysis": "\u2705 Complete - Employee feedback analysis with attrition prediction",
+    "api_endpoints": "\u2705 Complete - RESTful APIs with documentation",
+    "deployment": "\u2705 Complete - Docker containerization and deployment guides",
+    "testing": "\u2705 Complete - Comprehensive testing suite"
+  },
+  "technologies_used": [
+    "Google AI Studio (Gemini 2.0 Flash)",
+    "FastAPI",
+    "Python 3.11",
+    "Docker",
+    "Pydantic",
+    "Uvicorn"
+  ],
+  "api_url": "http://localhost:8000",
+  "documentation_url": "http://localhost:8000/docs"
+}

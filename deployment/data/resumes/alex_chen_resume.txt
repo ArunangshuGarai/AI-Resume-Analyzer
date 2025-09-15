@@ -1,0 +1,35 @@
+ALEX CHEN
+Software Engineer
+Email: alex.chen@email.com | Phone: (555) 625-4261
+
+PROFESSIONAL SUMMARY
+Software Engineer with 7 years of experience in full-stack development.
+Experienced in building scalable applications and working with modern development practices.
+
+TECHNICAL SKILLS
+- Programming Languages: Scala, Swift, JavaScript, Go, Ruby
+- Frameworks: Vue.js, Node.js, Spring Boot, React, Express.js, Ruby on Rails
+- Databases: Cassandra, MongoDB
+- Cloud Platforms: Google Cloud, Netlify
+- Tools: Git, Docker, Jenkins, JIRA
+
+PROFESSIONAL EXPERIENCE
+
+Lead Developer | InnovateLab | 2017 - 2021
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Tech Lead | ScaleUp | 2014 - 2016
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+Tech Lead | TechCorp | 2013 - 2014
+- Developed and maintained web applications
+- Collaborated with cross-functional teams
+- Participated in code reviews and testing
+
+EDUCATION
+Bachelor's in Information Technology
+Engineering University | 2015 - 2019

@@ -1,0 +1,17 @@
+{
+  "deployment_date": "2025-09-14T11:23:42.513196",
+  "version": "1.0.0",
+  "components": [
+    "Resume Screening API",
+    "Sentiment Analysis API",
+    "Batch Processing API",
+    "Interactive Documentation"
+  ],
+  "endpoints": {
+    "health": "/health",
+    "resume_screening": "/screen-resume",
+    "sentiment_analysis": "/analyze-sentiment",
+    "batch_sentiment": "/analyze-sentiment-batch",
+    "documentation": "/docs"
+  }
+}
